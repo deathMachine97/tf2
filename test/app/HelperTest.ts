@@ -1,6 +1,6 @@
 import 'mocha';
 import { expect } from "chai"
-import { Helper } from '../../app/classes/Helper'
+import { Helper } from '../../app/helper/classes/Helper'
 
 
 describe('HelperClass test', () => { // the tests container

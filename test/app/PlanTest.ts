@@ -1,13 +1,13 @@
 import 'mocha';
 import { assert, expect } from "chai"
-import { Plan } from '../../app/classes/Plan'
-import { Months } from '../../app/enums/Months'
+import { Plan } from '../../app/helper/classes/Plan'
+import { Months } from '../../app/helper/enums/Months'
 
-import { Plan as PlanType } from '../../app/interfaces/Plan'
+import { Plan as PlanType } from '../../app/helper/interfaces/Plan'
 
 
 describe('PlanClass test', () => { // the tests container
-	const testYear = '2020';
+	const testYear = '2021';
 
 	it('Create Object', () => {
 		const plan = new Plan();

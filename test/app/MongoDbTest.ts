@@ -1,5 +1,5 @@
 import 'mocha';
-import {MongoDb} from "../../app/classes/MongoDb";
+import {MongoDb} from "../../app/helper/classes/MongoDb";
 import { assert, expect } from "chai"
 
 

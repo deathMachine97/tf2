@@ -1,4 +1,4 @@
-import {Config} from '../../sys/classes/Config';
+import {Config} from '../../../sys/classes/Config';
 
 export class MongoDb {
     static instance: MongoDb;
