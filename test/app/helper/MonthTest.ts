@@ -1,18 +1,16 @@
 import 'mocha';
 import {expect} from "chai";
-import {Month} from '../../app/helper/classes/Month';
-import {Months} from '../../app/helper/enums/Months';
-import {MongoDbUserId} from '../../app/system/classes/MongoDbUserId';
-import {Config} from "../../sys/classes/Config";
-import {MongoDb} from "../../app/helper/classes/MongoDb";
+import {Month} from '../../../app/helper/classes/Month';
+import {Months} from '../../../app/helper/enums/Months';
+import {MongoDbUserId} from '../../../app/system/classes/MongoDbUserId';
+import {Config} from "../../../sys/classes/Config";
 
 
-describe('MonthClass test', async () => { // the tests container
+describe('MonthClass test',  () => { // the tests container
     const testYear = '2021';
     const testMonth = Months.January;
     const dbUserId = new MongoDbUserId(Config.getInstance().get('user_id'));
 
-    const mongoDb = await MongoDb.getInstance();
 
     it('Create Object', () => {
         const month = new Month(testYear, testMonth, dbUserId);
@@ -20,7 +18,7 @@ describe('MonthClass test', async () => { // the tests container
     });
 
 
-    it('Get monthly plan', () => {
+    it('Get monthly plan', async () => {
         const month = new Month(testYear, testMonth, dbUserId);
         expect(month.getPlan()).is.instanceof(Object);
     });
@@ -112,5 +110,4 @@ describe('MonthClass test', async () => { // the tests container
         }, 'Must return at least one expense of certain month');
     });
 
-    await mongoDb.closeConnection();
 })

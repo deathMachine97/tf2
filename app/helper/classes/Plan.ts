@@ -1,29 +1,57 @@
-import { Months } from '../enums/Months'
-import { MonthPlan } from '../interfaces/MonthPlan'
-import { Plan as PlanType } from '../interfaces/Plan'
-import { YearPlan as YearPlanType } from '../interfaces/YearPlan'
+import {Months} from '../enums/Months'
+import {MonthPlan} from '../interfaces/MonthPlan'
+import {Plan as PlanType} from '../interfaces/Plan'
+import {YearPlan as YearPlanType} from '../interfaces/YearPlan'
+import {DatabaseSingleton} from "../../db/classes/DatabaseSingleton";
+import {Config} from "../../../sys/classes/Config";
 
 
 export class Plan {
     plan: YearPlanType
+    static instance: Plan
 
-    constructor() {
+    private constructor() {
         this.plan = {
             '2021': {
-                '01': {'test': 2000},
-                '02': {'test': 20, 'test2': 123},
-                '03': {'test': 20},
-                '04': {'test': 20},
-                '05': {'test': 200},
-                '06': {'test': 600},
-                '07': {'test': 13},
-                '08': {'test': 2352},
-                '09': {'test': 24},
+                '1': {'test': 2000},
+                '2': {'test': 20, 'test2': 123},
+                '3': {'test': 20},
+                '4': {'test': 20},
+                '5': {'test': 200},
+                '6': {'test': 600},
+                '7': {'test': 13},
+                '8': {'test': 2352},
+                '9': {'test': 24},
                 '10': {'test': 87},
                 '11': {'test': 16},
                 '12': {'test': 92},
             }
         }
+    }
+
+    static async getInstance() {
+        if (!Plan.instance) {
+            const new_plan = await Plan.getPlanFromDb();
+            Plan.instance = new Plan();
+            Plan.instance.plan = (new_plan as YearPlanType);
+        }
+        return Plan.instance;
+    }
+
+    static async getPlanFromDb() {
+        const database = await DatabaseSingleton.getInstance();
+        const user_id = Config.getInstance().get('user_id');
+        const plans = await database.select('plan', {user_id: user_id}, NaN);
+
+        const new_plan = {};
+        plans.forEach((each: any) => {
+            const year = each.year;
+            const month = each.month;
+            const plan = each.plan;
+            new_plan[year] = year in new_plan ? new_plan[year] : {};
+            new_plan[year][month] = each.plan;
+        });
+        return new_plan;
     }
 
     getMonthlyPlan(year: string, month: Months): PlanType {

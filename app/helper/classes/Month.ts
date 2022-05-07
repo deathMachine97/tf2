@@ -1,9 +1,9 @@
 import {Plan} from './Plan';
 import {Months} from '../enums/Months'
 import {Plan as PlanType} from '../../../app/helper/interfaces/Plan'
-import {MongoDb} from "./MongoDb";
 import {Moment} from 'moment';
 import {UserDbId} from '../../system/interfaces/UserDbId';
+import {DatabaseSingleton} from "../../db/classes/DatabaseSingleton";
 
 export class Month {
     year: string
@@ -20,8 +20,8 @@ export class Month {
         this.momentDate = MomentJs().year(parseInt(year)).month(parseInt(this.month) - 1)
     }
 
-    getPlan(): PlanType {
-        const plan = new Plan();
+    async getPlan(): Promise<PlanType> {
+        const plan = await Plan.getInstance();
         return plan.getMonthlyPlan(this.year, this.month);
     }
 
@@ -35,25 +35,15 @@ export class Month {
     }
 
     async getExpense(): Promise<Object[]> {
-        const mongoDb = await MongoDb.getInstance();
-        const firstDate = this.getFirstDate();
-        const lastDate = this.getLastDate();
-        const user_id = this.userId.getId();
-
-        return await mongoDb.doRequest(async function (connection: any, db: any) {
-            const collection = db.collection('expense');
-            let result: any = null;
-            await collection.find({
-                "created": {
-                    "$gt": firstDate,
-                    "$lt": lastDate
-                },
-                "user_id": user_id
-            }).toArray().then((expenses: any) => {
-                result = expenses;
-            });
-            return result;
-        });
+        const requestBody = {
+            'created': {
+                '$gt': this.getFirstDate(),
+                '$lt': this.getLastDate()
+            },
+            'user_id': this.userId.getId()
+        }
+        const database = await DatabaseSingleton.getInstance();
+        return await database.select('expense', requestBody, NaN);
     }
 
     toDate(): Date {

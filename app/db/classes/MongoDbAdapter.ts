@@ -2,7 +2,7 @@ import {Config} from "../../../sys/classes/Config";
 import {Database} from "./Database";
 
 
-export class MongoDb extends Database {
+export class MongoDbAdapter extends Database {
 
     database: any
     client: any

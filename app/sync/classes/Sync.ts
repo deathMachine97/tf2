@@ -5,7 +5,7 @@ export abstract class Sync {
     async sync() {
         const database = await DatabaseSingleton.getInstance();
         const data = await database.select('plan', {
-            'user_id': Config.getInstance(),
+            'user_id': Config.getInstance().get('user_id'),
         }, NaN);
 
         const result = {};
