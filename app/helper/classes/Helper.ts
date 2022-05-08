@@ -19,12 +19,12 @@ export class Helper {
             '-u', '--user', {help: 'user id', default: Config.getInstance().get('user_id')}
         );
 
-        const command = CommandFactory.create(user, month, year, log);
-        const result = await command.run();
-        if (result) {
-            command.showResult();
-        } else {
-            command.showError();
-        }
+        // const command = CommandFactory.create(user, month, year, log);
+        // const result = await command.run();
+        // if (result) {
+        //     command.showResult();
+        // } else {
+        //     command.showError();
+        // }
     }
 }

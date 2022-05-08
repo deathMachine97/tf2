@@ -15,7 +15,7 @@ export class GetExpenseCommand extends Commands {
             const expense = await this.month.getExpense();
             const plan = await this.month.getPlan();
 
-            const result = {};
+            const groupedExpense = {};
             expense.forEach((expense: any) => {
                 const eachAmount = parseInt(expense['raw_text']
                     .split(' ')[0]);
@@ -23,20 +23,35 @@ export class GetExpenseCommand extends Commands {
                     .split(' ')[1];
 
 
-                const plannedExpense = plan[eachCategory] ? plan[eachCategory] : 0;
+                groupedExpense[eachCategory] = groupedExpense[eachCategory] ?
+                    groupedExpense[eachCategory] : 0;
 
-                result[eachCategory] = result[eachCategory] ?
-                    result[eachCategory] : 0;
-
-                result[eachCategory] += eachAmount + '/' + plannedExpense;
+                groupedExpense[eachCategory] += eachAmount;
             });
+
+            const result = {};
+            for (const categoryName in groupedExpense) {
+                const plannedExpense = plan[categoryName] ? plan[categoryName] : 0;
+                result[categoryName] = groupedExpense[categoryName] + '/'
+                    + plannedExpense;
+            }
+
+            for (const categoryName in plan) {
+                if (!result.hasOwnProperty(categoryName)) {
+                    result[categoryName] = '0/' + plan[categoryName];
+                }
+            }
 
             const sumExpense = expense.map((each: any) => each['amount'])
                 .reduce((a: number, b: number) => a + b);
             const sumPlannedExpense = Object.values(plan)
                 .map((each: any) => each['amount'])
-                .reduce((a: number, b: number) => a + b);
+                .reduce((a: number, b: number) => {
+                    return a + b
+                }, 0);
 
+            groupedExpense['total'] = (sumPlannedExpense - sumExpense) + '/' + sumPlannedExpense
+            return groupedExpense;
 
         } catch (e) {
             throw e;
