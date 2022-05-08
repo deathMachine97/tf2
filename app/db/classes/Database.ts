@@ -10,4 +10,6 @@ export abstract class Database implements DatabaseInterface {
     abstract update(from: string, searchData, updateData): Promise<boolean>
 
     abstract delete(from: string, searchData): Promise<boolean>
+
+    abstract closeConnection(): Promise<boolean>
 }

@@ -1,6 +1,9 @@
 import {Helper} from "./helper/classes/Helper";
-import {DateUtil} from "./system/classes/DateUtil";
-import {Config} from "../sys/classes/Config";
+import {DatabaseSingleton} from "./db/classes/DatabaseSingleton";
 
-const helper = new Helper();
-helper.runCommand();
+async function run() {
+    const helper = new Helper();
+    await helper.runCommand();
+}
+
+run();

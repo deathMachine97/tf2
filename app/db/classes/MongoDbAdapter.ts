@@ -41,4 +41,9 @@ export class MongoDbAdapter extends Database {
     async delete(from: string, searchData): Promise<boolean> {
         return;
     }
+
+    async closeConnection() {
+        await this.client.close()
+        return true;
+    }
 }

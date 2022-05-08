@@ -6,4 +6,6 @@ export interface Database {
     update(from: string, searchData, updateData): Promise<boolean>
 
     delete(from: string, searchData): Promise<boolean>
+
+    closeConnection(): Promise<boolean>
 }

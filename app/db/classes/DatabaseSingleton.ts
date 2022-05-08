@@ -46,4 +46,9 @@ export class DatabaseSingleton implements DatabaseInterface {
     async delete(from: string, searchData): Promise<boolean> {
         return this.database.delete(from, searchData)
     }
+
+    async closeConnection() {
+        await this.database.closeConnection();
+        return true;
+    }
 }

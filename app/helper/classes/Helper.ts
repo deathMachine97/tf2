@@ -3,6 +3,7 @@ import {Month} from "./Month";
 import {MongoDbUserId} from "../../system/classes/MongoDbUserId";
 import {Config} from "../../../sys/classes/Config";
 import {CommandFactory} from "./commands/CommandFactory";
+import {DatabaseSingleton} from "../../db/classes/DatabaseSingleton";
 
 const {ArgumentParser} = require('argparse');
 
@@ -27,5 +28,8 @@ export class Helper {
         } else {
             command.showError();
         }
+
+        const database = await DatabaseSingleton.getInstance();
+        await database.closeConnection()
     }
 }
