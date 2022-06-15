@@ -18,10 +18,11 @@ export class Helper {
         parser.add_argument('-m', '--month', {help: 'choose a month', default: DateUtil.getCurrentMonth()});
         parser.add_argument('-y', '--year', {help: 'choose a year', default: DateUtil.getCurrentYear()})
         parser.add_argument('-u', '--user', {help: 'user id', default: Config.getInstance().get('user_id')});
+        parser.add_argument('-g', '--grep', {help: 'grep', default: ''});
 
-        const {log, month, year, user} = parser.parse_args();
+        const {log, month, year, user, grep} = parser.parse_args();
 
-        const command = CommandFactory.create(user, month, year, log);
+        const command = CommandFactory.create(user, month, year, log, grep);
         const result = await command.run();
         if (result) {
             command.showResult();

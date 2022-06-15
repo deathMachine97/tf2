@@ -12,7 +12,13 @@ export class ShowLogsCommand extends Commands {
 
     async doStuff(): Promise<any> {
         try {
-            return await this.month.getExpense();
+            const result = await this.month.getExpense();
+            if (this.params.grep) {
+                return result.filter((each: any) => {
+                    return String(each.raw_text).toLowerCase().indexOf(this.params.grep) != -1;
+                });
+            }
+            // return result;
         } catch (e) {
             throw e;
         }
