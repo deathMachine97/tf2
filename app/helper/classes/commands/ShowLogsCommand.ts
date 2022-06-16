@@ -18,7 +18,7 @@ export class ShowLogsCommand extends Commands {
                     return String(each.raw_text).toLowerCase().indexOf(this.params.grep) != -1;
                 });
             }
-            // return result;
+            return result;
         } catch (e) {
             throw e;
         }
